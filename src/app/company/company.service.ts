@@ -23,7 +23,10 @@ export class CompanyService {
 
   deleteCompany(companyId: any): Observable<Company> {
     return this.httpClient.delete<Company>(`${this.API_BASE}/company/${companyId}`)
-    .pipe(catchError(this.errorHandler<Company>));
+    .pipe(
+      tap(data => { console.log('tap has been hit!')}),
+      catchError(this.errorHandler<Company>)
+      );
   }
 
   private errorHandler<T>(error: Error): Observable<T> {
