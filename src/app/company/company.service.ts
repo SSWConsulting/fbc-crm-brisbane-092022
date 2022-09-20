@@ -17,7 +17,7 @@ export class CompanyService {
     return this.httpClient.get<Company[]>(`${this.API_BASE}/company`)
     .pipe(
       tap(data => { }),
-      catchError(this.errorHandler<Company[]>)
+      catchError(error => this.errorHandler<Company[]>(error))
     );
   }
 
@@ -25,7 +25,7 @@ export class CompanyService {
     return this.httpClient.delete<Company>(`${this.API_BASE}/company/${companyId}`)
     .pipe(
       tap(data => { console.log('tap has been hit!')}),
-      catchError(this.errorHandler<Company>)
+      catchError(error => this.errorHandler<Company>(error))
       );
   }
 
