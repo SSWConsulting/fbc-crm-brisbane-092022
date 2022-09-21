@@ -52,20 +52,17 @@ export class CompanyEditComponent implements OnInit {
 
   submitCompanyForm() {
     let company: Company = { ...this.companyForm.value, id: this.companyId };
-
     // let compamyName = this.companyForm.controls['name'].setValue('SSW', { emitEvent: false })
 
-    let command$: Observable<Company>;
+    // let command$: Observable<Company>;
 
     if (this.isNewCompany) {
-      command$ = this.companyService.addCompany(company)
+
+      this.companyService.addCompany(company)
     } else {
-      command$ = this.companyService.updateCompany(company)
+      this.companyService.updateCompany(company)
     }
 
-    command$.subscribe(company => {
-      this.companyService.loadCompanies();
-      this.router.navigateByUrl('/company/list');
-    });
+    this.router.navigateByUrl('/company/list');
   }
 }

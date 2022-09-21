@@ -20,9 +20,6 @@ export class CompanyListComponent implements OnInit {
 
   deleteCompany(companyId: number) {
     console.log('deleteCompany', companyId);
-    this.companyService.deleteCompany(companyId)
-    .subscribe(company => {
-      this.companyService.loadCompanies();
-    });
+    this.companyService.deleteCompany(companyId);
   }
 }
