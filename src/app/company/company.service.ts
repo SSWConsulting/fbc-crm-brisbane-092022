@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Company } from './company';
 import { Observable } from 'rxjs';
 import { catchError, finalize, tap } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +27,16 @@ export class CompanyService {
       tap(data => { console.log('tap has been hit!')}),
       catchError(error => this.errorHandler<Company>(error))
       );
+  }
+
+  addCompany(company: Company): Observable<Company> {
+    return this.httpClient.post<Company>(`${this.API_BASE}/company`,
+    company,
+    { headers: new HttpHeaders().set('content-type', 'application/json') }
+    )
+    .pipe(
+      catchError(error => this.errorHandler<Company>(error))
+    );
   }
 
   private errorHandler<T>(error: Error): Observable<T> {

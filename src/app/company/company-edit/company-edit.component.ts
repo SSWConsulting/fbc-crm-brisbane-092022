@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Company } from '../company';
 import { CompanyService } from '../company.service';
 
 @Component({
@@ -18,7 +19,8 @@ export class CompanyEditComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private companyService: CompanyService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) {
 
     this.companyId = this.activatedRoute.snapshot.params['id'];
@@ -26,7 +28,7 @@ export class CompanyEditComponent implements OnInit {
 
     this.companyForm = this.formBuilder.group(
       {
-        name: ['Default', Validators.required],
+        name: ['SSW', Validators.required],
         email: new FormControl(),
         phone: new FormControl()
       }
@@ -39,6 +41,16 @@ export class CompanyEditComponent implements OnInit {
 
   ngOnInit(): void {
 
+  }
+
+  submitCompanyForm() {
+    let company: Company = this.companyForm.value;
+
+    this.companyService.addCompany(company)
+    .subscribe(company => {
+      this.router.navigateByUrl('/company/list')
+      // this.router.navigate(['/company', 'list']) Same as above
+    });
   }
 
 }
