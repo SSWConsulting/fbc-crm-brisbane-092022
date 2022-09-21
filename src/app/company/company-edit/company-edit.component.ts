@@ -10,11 +10,9 @@ import { CompanyService } from '../company.service';
   styleUrls: ['./company-edit.component.scss']
 })
 export class CompanyEditComponent implements OnInit {
-
   isNewCompany: boolean;
   companyId: number;
   companyForm: FormGroup;
-
 
   constructor(
     private formBuilder: FormBuilder,
@@ -30,27 +28,34 @@ export class CompanyEditComponent implements OnInit {
       {
         name: ['SSW', Validators.required],
         email: new FormControl(),
-        phone: new FormControl()
+        phone: new FormControl(),
       }
     );
 
-    if(!this.isNewCompany){
-      // Load the company values from API
+    if (!this.isNewCompany) {
+      this.companyService.getCompany(this.companyId)
+        .subscribe((company: Company) => {
+          this.companyForm.patchValue(company);
+        })
     }
   }
 
   ngOnInit(): void {
-
   }
 
   submitCompanyForm() {
-    let company: Company = this.companyForm.value;
+    let company: Company = { ...this.companyForm.value, id: this.companyId };
 
-    this.companyService.addCompany(company)
-    .subscribe(company => {
-      this.router.navigateByUrl('/company/list')
-      // this.router.navigate(['/company', 'list']) Same as above
-    });
+    if (this.isNewCompany) {
+      this.companyService.addCompany(company)
+        .subscribe(company => {
+          this.router.navigateByUrl('/company/list');
+        });
+    } else {
+      this.companyService.updateCompany(company)
+        .subscribe(company => {
+          this.router.navigateByUrl('/company/list');
+        });
+    }
   }
-
 }
