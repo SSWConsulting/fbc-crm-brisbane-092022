@@ -3,7 +3,7 @@
   <ul class="navbar-nav ml-auto">
     <li class="nav-item" [routerLinkActive]="'active custom-class'">
       <a class="nav-link" [routerLink]="['/company/list']">
-        Companies (#{{ (companyCount$ | async) }})
+        <span id="company-count">Companies (#{{ (companyCount$ | async) }})</span>
       </a>
     </li>
     <li class="nav-item" [routerLinkActive]="'active'">
